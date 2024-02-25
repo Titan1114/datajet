@@ -35,7 +35,11 @@ switch (process.env.NODE_ENV) {
   case 'production':
     Object.assign(dbConfig, {
       type: 'postgres',
-      url: process.env.DATABASE_URL,
+      host: 'dpg-cb05v9j19n09vp406or0-a.singapore-postgres.render.com',
+      port: 5432,
+      database: 'quintech_tooljet',
+      username: 'sto_user',
+      password: 'aSXIA18XqdRZnAOocMu0f4KzmNfrbLC7',
       entities: ['**/*.entity.js'],
       migrations: ['migrations/*.js'],
       migrationsRun: true,
