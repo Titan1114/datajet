@@ -1,4 +1,4 @@
-import { BadRequestException, Injectable, Res } from '@nestjs/common';
+import { Injectable, Res } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { User } from '../entities/user.entity';
 import { Repository } from 'typeorm';
@@ -11,7 +11,7 @@ const scrypt = promisify(_scrypt);
 
 @Injectable()
 export class AuthService {
-  constructor(@InjectRepository(User) private repo: Repository<User>) { }
+  constructor(@InjectRepository(User) private repo: Repository<User>) {}
 
   async googleLogin(userDetails: CurrentUserDto) {
     const { email } = userDetails;
@@ -31,7 +31,8 @@ export class AuthService {
     const { username, password } = registerUser;
 
     const user = await this.repo.findOneBy({ username });
-    if (user) return res.json({ status: 400, message: "Username already exists" });
+    if (user)
+      return res.json({ status: 400, message: 'Username already exists' });
 
     const salt = randomBytes(8).toString('hex');
     const hash = (await scrypt(password, salt, 32)) as Buffer;
@@ -45,12 +46,12 @@ export class AuthService {
     const { username, password } = loginUser;
 
     const user = await this.repo.findOneBy({ username });
-    if (!user) return res.json({ status: 400, message: "User not registered" });
+    if (!user) return res.json({ status: 400, message: 'User not registered' });
 
     const [salt, savedHash] = user.password.split('.');
     const hash = (await scrypt(password, salt, 32)) as Buffer;
     if (hash.toString('hex') !== savedHash)
-      return res.json({ status: 400, message: "Invalid password" });;
+      return res.json({ status: 400, message: 'Invalid password' });
 
     return user;
   }

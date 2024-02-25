@@ -9,7 +9,7 @@ import {
   BadRequestException,
   Session,
   UseGuards,
-  Query
+  Query,
 } from '@nestjs/common';
 import { ComponentsService } from './components.service';
 import { CreateComponentDto } from '../dtos/create-component.dto';

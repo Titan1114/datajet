@@ -17,11 +17,11 @@ import { Serialize } from '../interceptors/serialize.interceptor';
 
 @Controller('/api/auth')
 export class AuthController {
-  constructor(private readonly authService: AuthService) { }
+  constructor(private readonly authService: AuthService) {}
 
   @UseGuards(GoogleAuthGuard)
   @Get('/google/login')
-  handleLogin() { }
+  handleLogin() {}
 
   @UseGuards(GoogleAuthGuard)
   @Get('/google/redirect')
@@ -60,7 +60,10 @@ export class AuthController {
         httpOnly: true,
       });
     }
-    return registerUser;
+    return res.json({
+      status: 201,
+      data: { username: registerUser.username, id: registerUser.id },
+    });
   }
 
   @Post('/login')
@@ -79,7 +82,10 @@ export class AuthController {
         httpOnly: true,
       });
     }
-    return loginUser;
+    return res.json({
+      status: 201,
+      data: { username: loginUser.username, id: loginUser.id },
+    });
   }
 
   @Get('/logout')
