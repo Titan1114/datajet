@@ -97,7 +97,6 @@ export class AuthController {
   }
 
   @Get('/user')
-  @UseGuards(AuthGuard)
   async currentUser(@Session() session: any, @Res() res: any) {
     const [user] = await this.authService.findUser(session.userId);
     return res.json({
