@@ -32,6 +32,7 @@ export class AuthController {
     res.cookie('userId', user.id, {
       maxAge: expiresIn,
       httpOnly: true,
+      sameSite: 'none',
     });
     return res.redirect('http://localhost:5173/');
   }
@@ -58,6 +59,7 @@ export class AuthController {
       res.cookie('userId', registerUser.id, {
         maxAge: expiresIn,
         httpOnly: true,
+        sameSite: 'none',
       });
     }
     return res.json({
@@ -80,6 +82,7 @@ export class AuthController {
       res.cookie('userId', loginUser.id, {
         maxAge: expiresIn,
         httpOnly: true,
+        sameSite: 'none',
       });
     }
     return res.json({
@@ -97,6 +100,7 @@ export class AuthController {
   }
 
   @Get('/user')
+  @UseGuards(AuthGuard)
   async currentUser(@Session() session: any, @Res() res: any) {
     const [user] = await this.authService.findUser(session.userId);
     return res.json({
