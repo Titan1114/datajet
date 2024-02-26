@@ -36,20 +36,20 @@ export class AuthController {
   @Get('/google/redirect')
   async handleRedirect(@Req() req, @Session() session: any, @Res() res: any) {
     const user = await this.authService.googleLogin(req.user);
-    // session.userId = user.id;
-    // const expiresIn = 24 * 60 * 60 * 1000;
-    // res.cookie('userId', user.id, {
-    //   maxAge: expiresIn,
-    //   secure: false,
-    // });
-    // console.log(req.user);
-    // return res.redirect(`http://localhost:5173/${req.user.accessToken}`);
+    session.userId = user.id;
+    const expiresIn = 24 * 60 * 60 * 1000;
+    res.cookie('userId', user.id, {
+      maxAge: expiresIn,
+      secure: false,
+    });
+    console.log(req.user);
+    return res.redirect(`http://localhost:5173/${req.user.accessToken}`);
 
-    const token = uuid();
-    this.sessionArray = this.sessionArray.filter((session) => session.userId !== user.id);
-    this.sessionArray.push({ token, userId: user.id });
+    // const token = uuid();
+    // this.sessionArray = this.sessionArray.filter((session) => session.userId !== user.id);
+    // this.sessionArray.push({ token, userId: user.id });
 
-    return res.redirect(`http://localhost:5173/${token}`);
+    // return res.redirect(`http://localhost:5173/${token}`);
   }
 
   @Get('/:token')
