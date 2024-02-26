@@ -36,7 +36,8 @@ export class AuthController {
       domain: 'https://datajet-production.up.railway.app/',
       secure: false,
     });
-    return res.redirect('http://localhost:5173/');
+    console.log(req.user);
+    return res.redirect(`http://localhost:5173?accessToken=${req.user.accessToken}`);
   }
 
   @Get('/google/logout')
