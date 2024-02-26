@@ -45,11 +45,11 @@ export class AuthController {
     // console.log(req.user);
     // return res.redirect(`http://localhost:5173/${req.user.accessToken}`);
 
-    const token = uuid();
-    this.sessionArray = this.sessionArray.filter((session) => session.userId !== user.id);
-    this.sessionArray.push({ token, userId: user.id });
+    // const token = uuid();
+    // this.sessionArray = this.sessionArray.filter((session) => session.userId !== user.id);
+    // this.sessionArray.push({ token, userId: user.id });
 
-    return res.redirect(`http://localhost:5173/${token}`);
+    return res.redirect(`http://localhost:5173/`);
   }
 
   @Get('/:token')
