@@ -36,6 +36,7 @@ export class AuthController {
   @Get('/google/redirect')
   async handleRedirect(@Req() req, @Session() session: any, @Res() res: any) {
     const user = await this.authService.googleLogin(req.user);
+    console.log(req);
     // session.userId = user.id;
     // const expiresIn = 24 * 60 * 60 * 1000;
     // res.cookie('userId', user.id, {
