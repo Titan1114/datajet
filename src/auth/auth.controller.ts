@@ -31,8 +31,10 @@ export class AuthController {
     const expiresIn = 24 * 60 * 60 * 1000;
     res.cookie('userId', user.id, {
       maxAge: expiresIn,
-      httpOnly: false,
+      httpOnly: true,
       sameSite: 'none',
+      domain: 'https://datajet-production.up.railway.app/',
+      secure: false,
     });
     return res.redirect('http://localhost:5173/');
   }
@@ -58,8 +60,10 @@ export class AuthController {
     if (registerUser.id) {
       res.cookie('userId', registerUser.id, {
         maxAge: expiresIn,
-        httpOnly: false,
+        httpOnly: true,
         sameSite: 'none',
+        domain: 'https://datajet-production.up.railway.app/',
+        secure: false,
       });
     }
     return res.json({
@@ -81,8 +85,10 @@ export class AuthController {
     if (loginUser.id) {
       res.cookie('userId', loginUser.id, {
         maxAge: expiresIn,
-        httpOnly: false,
+        httpOnly: true,
         sameSite: 'none',
+        domain: 'https://datajet-production.up.railway.app/',
+        secure: false,
       });
     }
     return res.json({
