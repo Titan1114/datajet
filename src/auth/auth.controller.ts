@@ -7,6 +7,7 @@ import {
   UseGuards,
   Post,
   Body,
+  Param,
 } from '@nestjs/common';
 import { AuthService } from './auth.service';
 import { GoogleAuthGuard } from '../guards/google-oauth.guard';
@@ -15,11 +16,17 @@ import { RegisterUserDto } from '../dtos/register-user.dto';
 import { ExposeRegisterUserDto } from '../dtos/expose-user.dto';
 import { Serialize } from '../interceptors/serialize.interceptor';
 import { ApiTags } from '@nestjs/swagger';
+import { v4 as uuid } from 'uuid';
 
 @ApiTags('Auth')
 @Controller('/api/auth')
 export class AuthController {
   constructor(private readonly authService: AuthService) {}
+
+  sessionArray: {
+    token: uuid,
+    userId: uuid,
+  }[] = [];
 
   @UseGuards(GoogleAuthGuard)
   @Get('/google/login')
@@ -29,14 +36,30 @@ export class AuthController {
   @Get('/google/redirect')
   async handleRedirect(@Req() req, @Session() session: any, @Res() res: any) {
     const user = await this.authService.googleLogin(req.user);
-    session.userId = user.id;
-    const expiresIn = 24 * 60 * 60 * 1000;
+    // session.userId = user.id;
+    // const expiresIn = 24 * 60 * 60 * 1000;
     // res.cookie('userId', user.id, {
     //   maxAge: expiresIn,
     //   secure: false,
     // });
-    console.log(req.user);
-    return res.redirect(`http://localhost:5173/${req.user.accessToken}`);
+    // console.log(req.user);
+    // return res.redirect(`http://localhost:5173/${req.user.accessToken}`);
+
+    const token = uuid();
+    this.sessionArray = this.sessionArray.filter((session) => session.userId !== user.id);
+    this.sessionArray.push({ token, userId: user.id });
+
+    return res.redirect(`http://localhost:5173/${token}`);
+  }
+
+  @Get('/:token')
+  getSessionData(@Param('token') token: string, @Session() session: any, @Res() res: any) {
+    const sessionData = this.sessionArray.find((session) => session.token === token);
+    if (!sessionData) {
+      return res.json({ msg: 'Session not found' });
+    }
+    session.userId = sessionData.userId;
+    return res.json({ msg: 'Session found' });
   }
 
   @Get('/google/logout')
@@ -56,13 +79,13 @@ export class AuthController {
   ) {
     const registerUser = await this.authService.createUser(body, res);
     session.userId = registerUser.id;
-    const expiresIn = 24 * 60 * 60 * 1000;
-    if (registerUser.id) {
+    // const expiresIn = 24 * 60 * 60 * 1000;
+    // if (registerUser.id) {
       // res.cookie('userId', registerUser.id, {
       //   maxAge: expiresIn,
       //   secure: false,
       // });
-    }
+    // }
     return res.json({
       status: 201,
       data: { username: registerUser.username, id: registerUser.id },
@@ -78,13 +101,13 @@ export class AuthController {
   ) {
     const loginUser = await this.authService.userSignin(body, res);
     session.userId = loginUser.id;
-    const expiresIn = 24 * 60 * 60 * 1000;
-    if (loginUser.id) {
+    // const expiresIn = 24 * 60 * 60 * 1000;
+    // if (loginUser.id) {
       // res.cookie('userId', loginUser.id, {
       //   maxAge: expiresIn,
       //   secure: false,
       // });
-    }
+    // }
     return res.json({
       status: 201,
       data: { username: loginUser.username, id: loginUser.id },

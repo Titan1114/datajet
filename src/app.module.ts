@@ -3,7 +3,7 @@ import { AppController } from './app.controller';
 import { AppService } from './app.service';
 import { ConfigModule, ConfigService } from '@nestjs/config';
 import { TypeOrmModule } from '@nestjs/typeorm';
-import { dbConfig } from './config/typeorm.config';
+import { dbConfig } from '../db/typeorm.config';
 import { APP_FILTER, APP_PIPE } from '@nestjs/core';
 import { HttpExceptionFilter } from './filters/HttpException.filter';
 import { DatasourceModule } from './datasource/datasource.module';

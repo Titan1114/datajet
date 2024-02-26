@@ -29,11 +29,8 @@ export class GoogleStrategy extends PassportStrategy(Strategy, 'google') {
     const user = {
       email: emails[0].value,
       username: displayName,
-      accessToken: accessToken,
+      accessToken,
     };
-
-    // const loginUser = await this.authService.googleLogin(user);
-    // return loginUser || null;
-    return user || null ;
+    return user || null;
   }
 }

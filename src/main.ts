@@ -8,7 +8,6 @@ async function bootstrap() {
     origin: true,
     credentials: true,
   });
-
   const config = new DocumentBuilder()
     .setTitle('DataJet API')
     .setDescription('No code database integration')
@@ -17,6 +16,6 @@ async function bootstrap() {
   const document = SwaggerModule.createDocument(app, config);
   SwaggerModule.setup('apis', app, document);
 
-  await app.listen(process.env.PORT, '0.0.0.0');
+  await app.listen(process.env.PORT || 3001, '0.0.0.0');
 }
 bootstrap();

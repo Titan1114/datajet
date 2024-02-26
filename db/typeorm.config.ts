@@ -13,12 +13,8 @@ switch (process.env.NODE_ENV) {
       password: 'pratik123',
       database: 'datajet_db',
       synchronize: true,
-      entities: ['**/*.entity.js'],
-      migrationsRun: true,
-      migrations: ['migrations/*.js'],
-      cli: {
-        migrationsDir: 'migrations',
-      },
+      entities: ['dist/**/*.entity.js'],
+      migrations: ['dist/db/migrations/*.js'],
     });
     break;
   case 'test':
