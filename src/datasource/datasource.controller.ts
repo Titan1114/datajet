@@ -13,7 +13,9 @@ import { CreateDatasourceDto } from '../dtos/create-datasource.dto';
 import { UpdateDatasourceDto } from '../dtos/update-datasource.dto';
 import { DatasourceService } from './datasource.service';
 import { AuthGuard } from '../guards/auth.guard';
+import { ApiTags } from '@nestjs/swagger';
 
+@ApiTags('Data source')
 @Controller('/api/data-sources')
 @UseGuards(AuthGuard)
 export class DatasourceController {

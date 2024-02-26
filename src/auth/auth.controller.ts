@@ -14,7 +14,9 @@ import { AuthGuard } from '../guards/auth.guard';
 import { RegisterUserDto } from '../dtos/register-user.dto';
 import { ExposeRegisterUserDto } from '../dtos/expose-user.dto';
 import { Serialize } from '../interceptors/serialize.interceptor';
+import { ApiTags } from '@nestjs/swagger';
 
+@ApiTags('Auth')
 @Controller('/api/auth')
 export class AuthController {
   constructor(private readonly authService: AuthService) {}

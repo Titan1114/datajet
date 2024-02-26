@@ -13,7 +13,6 @@ async function bootstrap() {
     .setTitle('DataJet API')
     .setDescription('No code database integration')
     .setVersion('1.0')
-    .addTag('Nest API')
     .build();
   const document = SwaggerModule.createDocument(app, config);
   SwaggerModule.setup('apis', app, document);

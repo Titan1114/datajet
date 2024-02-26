@@ -13,7 +13,9 @@ import { QueryService } from './query.service';
 import { CreateQueryDto } from '../dtos/create-query.dto';
 import { UpdateQueryDto } from '../dtos/update-query.dto';
 import { AuthGuard } from '../guards/auth.guard';
+import { ApiTags } from '@nestjs/swagger';
 
+@ApiTags('Query')
 @Controller('/api')
 @UseGuards(AuthGuard)
 export class QueryController {

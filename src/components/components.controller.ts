@@ -15,7 +15,9 @@ import { ComponentsService } from './components.service';
 import { CreateComponentDto } from '../dtos/create-component.dto';
 import { UpdateComponentDto } from '../dtos/update-components.dto';
 import { AuthGuard } from '../guards/auth.guard';
+import { ApiTags } from '@nestjs/swagger';
 
+@ApiTags('Components')
 @Controller('/api/components')
 export class ComponentsController {
   constructor(private readonly componentsService: ComponentsService) {}
