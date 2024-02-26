@@ -37,7 +37,7 @@ export class AuthController {
       secure: false,
     });
     console.log(req.user);
-    return res.redirect(`http://localhost:5173?accessToken=${req.user.accessToken}`);
+    return res.redirect(`http://localhost:5173/${req.user.accessToken}`);
   }
 
   @Get('/google/logout')
