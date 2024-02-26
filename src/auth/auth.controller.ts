@@ -31,7 +31,7 @@ export class AuthController {
     const expiresIn = 24 * 60 * 60 * 1000;
     res.cookie('userId', user.id, {
       maxAge: expiresIn,
-      httpOnly: true,
+      httpOnly: false,
       sameSite: 'none',
     });
     return res.redirect('http://localhost:5173/');
@@ -58,7 +58,7 @@ export class AuthController {
     if (registerUser.id) {
       res.cookie('userId', registerUser.id, {
         maxAge: expiresIn,
-        httpOnly: true,
+        httpOnly: false,
         sameSite: 'none',
       });
     }
@@ -81,7 +81,7 @@ export class AuthController {
     if (loginUser.id) {
       res.cookie('userId', loginUser.id, {
         maxAge: expiresIn,
-        httpOnly: true,
+        httpOnly: false,
         sameSite: 'none',
       });
     }
