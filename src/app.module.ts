@@ -51,8 +51,7 @@ export class AppModule {
         cookieSession({
           keys: [this.config.get<string>('COOKIE_KEY')],
           maxAge: 24 * 60 * 60 * 1000,
-          resave: false,
-          saveUninitialized: false,
+          secure: false,
         }),
       )
       .forRoutes('*');

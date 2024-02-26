@@ -31,13 +31,10 @@ export class AuthController {
     const user = await this.authService.googleLogin(req.user);
     session.userId = user.id;
     const expiresIn = 24 * 60 * 60 * 1000;
-    res.cookie('userId', user.id, {
-      maxAge: expiresIn,
-      httpOnly: false,
-      sameSite: 'none',
-      domain: 'https://datajet-production.up.railway.app/',
-      secure: false,
-    });
+    // res.cookie('userId', user.id, {
+    //   maxAge: expiresIn,
+    //   secure: false,
+    // });
     console.log(req.user);
     return res.redirect(`http://localhost:5173/${req.user.accessToken}`);
   }
@@ -46,7 +43,7 @@ export class AuthController {
   @UseGuards(AuthGuard)
   handleLogout(@Session() session: any, @Res() res: any) {
     session.userId = null;
-    res.clearCookie('userId');
+    // res.clearCookie('userId');
     return res.json({ msg: 'Logged out' });
   }
 
@@ -61,13 +58,10 @@ export class AuthController {
     session.userId = registerUser.id;
     const expiresIn = 24 * 60 * 60 * 1000;
     if (registerUser.id) {
-      res.cookie('userId', registerUser.id, {
-        maxAge: expiresIn,
-        httpOnly: false,
-        sameSite: 'none',
-        domain: 'https://datajet-production.up.railway.app/',
-        secure: false,
-      });
+      // res.cookie('userId', registerUser.id, {
+      //   maxAge: expiresIn,
+      //   secure: false,
+      // });
     }
     return res.json({
       status: 201,
@@ -86,13 +80,10 @@ export class AuthController {
     session.userId = loginUser.id;
     const expiresIn = 24 * 60 * 60 * 1000;
     if (loginUser.id) {
-      res.cookie('userId', loginUser.id, {
-        maxAge: expiresIn,
-        httpOnly: false,
-        sameSite: 'none',
-        domain: 'https://datajet-production.up.railway.app/',
-        secure: false,
-      });
+      // res.cookie('userId', loginUser.id, {
+      //   maxAge: expiresIn,
+      //   secure: false,
+      // });
     }
     return res.json({
       status: 201,
@@ -104,7 +95,7 @@ export class AuthController {
   @UseGuards(AuthGuard)
   async logoutUser(@Res() res: any, @Session() session: any) {
     session.userId = null;
-    res.clearCookie('userId');
+    // res.clearCookie('userId');
     return res.json({ msg: 'User Logged out' });
   }
 
