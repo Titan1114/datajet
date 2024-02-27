@@ -17,11 +17,15 @@ import { ExposeRegisterUserDto } from '../dtos/expose-user.dto';
 import { Serialize } from '../interceptors/serialize.interceptor';
 import { ApiTags } from '@nestjs/swagger';
 import { v4 as uuid } from 'uuid';
+import { JwtService } from '@nestjs/jwt';
 
 @ApiTags('Auth')
 @Controller('/api/auth')
 export class AuthController {
-  constructor(private readonly authService: AuthService) {}
+  constructor(
+    private readonly authService: AuthService,
+    private jwtService: JwtService
+  ) { }
 
   sessionArray: {
     token: uuid,
@@ -30,27 +34,28 @@ export class AuthController {
 
   @UseGuards(GoogleAuthGuard)
   @Get('/google/login')
-  handleLogin() {}
+  handleLogin() { }
 
   @UseGuards(GoogleAuthGuard)
   @Get('/google/redirect')
   async handleRedirect(@Req() req, @Session() session: any, @Res() res: any) {
     const user = await this.authService.googleLogin(req.user);
-    console.log(req);
     // session.userId = user.id;
-    // const expiresIn = 24 * 60 * 60 * 1000;
-    // res.cookie('userId', user.id, {
-    //   maxAge: expiresIn,
+    // // const expiresIn = 24 * 60 * 60 * 1000;
+    // // res.cookie('userId', user.id, {
+    // //   maxAge: expiresIn,
     //   secure: false,
     // });
-    // console.log(req.user);
-    // return res.redirect(`http://localhost:5173/${req.user.accessToken}`);
+    const payload = { username: user.username, sub: user.id };
+    const accessToken = await this.jwtService.signAsync(payload);
+    console.log(req.user);
+    return res.redirect(`http://localhost:5173/${accessToken}`);
 
-    const token = uuid();
-    this.sessionArray = this.sessionArray.filter((session) => session.userId !== user.id);
-    this.sessionArray.push({ token, userId: user.id });
+    // const token = uuid();
+    // this.sessionArray = this.sessionArray.filter((session) => session.userId !== user.id);
+    // this.sessionArray.push({ token, userId: user.id });
 
-    return res.redirect(`http://localhost:5173/${token}`);
+    // return res.redirect(`http://localhost:5173/${token}`);
   }
 
   @Get('/:token')
@@ -82,10 +87,10 @@ export class AuthController {
     session.userId = registerUser.id;
     // const expiresIn = 24 * 60 * 60 * 1000;
     // if (registerUser.id) {
-      // res.cookie('userId', registerUser.id, {
-      //   maxAge: expiresIn,
-      //   secure: false,
-      // });
+    // res.cookie('userId', registerUser.id, {
+    //   maxAge: expiresIn,
+    //   secure: false,
+    // });
     // }
     return res.json({
       status: 201,
@@ -102,12 +107,12 @@ export class AuthController {
   ) {
     const loginUser = await this.authService.userSignin(body, res);
     session.userId = loginUser.id;
-    const expiresIn = 24 * 60 * 60 * 1000;
+    // const expiresIn = 24 * 60 * 60 * 1000;
     // if (loginUser.id) {
-    //   res.cookie('userId', loginUser.id, {
-    //     maxAge: expiresIn,
-    //     secure: false,
-    //   });
+    // res.cookie('userId', loginUser.id, {
+    //   maxAge: expiresIn,
+    //   secure: false,
+    // });
     // }
     return res.json({
       status: 201,
