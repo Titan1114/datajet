@@ -11,6 +11,7 @@ import { QueryModule } from './query/query.module';
 import { AuthModule } from './auth/auth.module';
 import { CurrentUserMiddleware } from './middlewares/current-user.middleware';
 import { ComponentsModule } from './components/components.module';
+import { MongodbModule } from './mongodb/mongodb.module';
 
 /* eslint-disable @typescript-eslint/no-var-requires */
 const cookieSession = require('cookie-session');
@@ -26,6 +27,7 @@ const cookieSession = require('cookie-session');
     QueryModule,
     AuthModule,
     ComponentsModule,
+    MongodbModule,
   ],
   controllers: [AppController],
   providers: [

@@ -1,4 +1,4 @@
-import { Injectable, Res } from '@nestjs/common';
+import { BadRequestException, Injectable, Res } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { User } from '../entities/user.entity';
 import { Repository } from 'typeorm';
@@ -27,12 +27,11 @@ export class AuthService {
     return user;
   }
 
-  async createUser(registerUser: RegisterUserDto, @Res() res: any) {
+  async createUser(registerUser: RegisterUserDto) {
     const { username, password } = registerUser;
 
     const user = await this.repo.findOneBy({ username });
-    if (user)
-      return res.json({ status: 400, message: 'Username already exists' });
+    if (user) throw new BadRequestException('User already exists');
 
     const salt = randomBytes(8).toString('hex');
     const hash = (await scrypt(password, salt, 32)) as Buffer;
@@ -42,28 +41,17 @@ export class AuthService {
     return this.repo.save({ username, password: result });
   }
 
-  async userSignin(loginUser: RegisterUserDto, @Res() res: any) {
+  async userSignin(loginUser: RegisterUserDto) {
     const { username, password } = loginUser;
 
     const user = await this.repo.findOneBy({ username });
-    if (!user) return res.json({ status: 400, message: 'User not registered' });
+    if (!user) throw new BadRequestException('Username not found');
 
     const [salt, savedHash] = user.password.split('.');
     const hash = (await scrypt(password, salt, 32)) as Buffer;
     if (hash.toString('hex') !== savedHash)
-      return res.json({ status: 400, message: 'Invalid password' });
+      throw new BadRequestException('Invalid password');
 
     return user;
   }
-
-  // async findByUsername(username: string) {
-  //   if (!username)
-  //     throw new NotFoundException('no user with username null');
-
-  //   const user = await this.regUserRepo.findOneBy({ username });
-  //   if (!user)
-  //     throw new NotFoundException('user not found');
-
-  //   return user;
-  // }
 }

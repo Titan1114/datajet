@@ -16,9 +16,9 @@ import { jwtConstants } from '../constants/constants';
       global: true,
       secret: jwtConstants.secret,
       signOptions: {
-        expiresIn: '120s'
-      }
-    })
+        expiresIn: '24h',
+      },
+    }),
   ],
   controllers: [AuthController],
   providers: [AuthService, GoogleStrategy],
