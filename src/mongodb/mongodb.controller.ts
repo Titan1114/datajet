@@ -1,6 +1,8 @@
 import { Controller, Post, Body, Get } from '@nestjs/common';
 import { MongodbService } from './mongodb.service';
+import { ApiTags } from '@nestjs/swagger';
 
+@ApiTags('MongoDB')
 @Controller('/mongodb') 
 export class MongodbController {
   constructor(private readonly mongodbService: MongodbService) {}
