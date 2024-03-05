@@ -13,7 +13,7 @@ import { CreateDatasourceDto } from '../dtos/create-datasource.dto';
 import { UpdateDatasourceDto } from '../dtos/update-datasource.dto';
 import { DatasourceService } from './datasource.service';
 import { AuthGuard } from '../guards/auth.guard';
-import { ApiTags } from '@nestjs/swagger';
+import { ApiBody, ApiParam, ApiTags } from '@nestjs/swagger';
 
 @ApiTags('Data source')
 @Controller('/api/data-sources')
@@ -22,6 +22,9 @@ export class DatasourceController {
   constructor(private datasourceService: DatasourceService) {}
 
   @Post()
+  @ApiBody({ 
+    type: CreateDatasourceDto, 
+  })
   async createDatasource(
     @Body() body: CreateDatasourceDto,
     @Session() session: any,
@@ -34,6 +37,10 @@ export class DatasourceController {
   }
 
   @Get('/:id')
+  @ApiParam({
+    name: 'id',
+    type: String,
+  })
   async findDatasource(@Param('id') id: string, @Session() session: any) {
     const datasource = await this.datasourceService.findOne(id, session.userId);
     return datasource;
@@ -46,6 +53,13 @@ export class DatasourceController {
   }
 
   @Patch('/:id')
+  @ApiParam({
+    name: 'id',
+    type: String,
+  })
+  @ApiBody({ 
+    type: UpdateDatasourceDto, 
+  })
   async updateDatasource(
     @Param('id') id: string,
     @Body() body: UpdateDatasourceDto,
@@ -60,6 +74,10 @@ export class DatasourceController {
   }
 
   @Delete('/:id')
+  @ApiParam({
+    name: 'id',
+    type: String,
+  })
   async removeDatasource(@Param('id') id: string, @Session() session: any) {
     const datasource = await this.datasourceService.remove(id, session.userId);
     return datasource;
