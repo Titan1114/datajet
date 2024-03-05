@@ -14,7 +14,7 @@ import { AuthGuard } from '../guards/auth.guard';
 import { RegisterUserDto } from '../dtos/register-user.dto';
 import { ExposeRegisterUserDto } from '../dtos/expose-user.dto';
 import { Serialize } from '../interceptors/serialize.interceptor';
-import { ApiTags } from '@nestjs/swagger';
+import { ApiBearerAuth, ApiBody, ApiTags } from '@nestjs/swagger';
 import { JwtService } from '@nestjs/jwt';
 
 @ApiTags('Auth')
@@ -46,6 +46,9 @@ export class AuthController {
   }
 
   @Post('/register')
+  @ApiBody({ 
+    type: RegisterUserDto, 
+  })
   @Serialize(ExposeRegisterUserDto)
   async registerUser(@Body() body: RegisterUserDto, @Res() res: any) {
     const registerUser = await this.authService.createUser(body);
@@ -62,6 +65,9 @@ export class AuthController {
   }
 
   @Post('/login')
+  @ApiBody({ 
+    type: RegisterUserDto,
+  })
   @Serialize(ExposeRegisterUserDto)
   async loginUser(@Body() body: RegisterUserDto, @Res() res: any) {
     const loginUser = await this.authService.userSignin(body);
