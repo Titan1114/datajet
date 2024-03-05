@@ -59,9 +59,9 @@ export class MongodbService {
         const result = await db
             .collection(queryOptions.collection)
             .updateOne(
-                this.parseEJSON(queryOptions.filter),
-                this.parseEJSON(queryOptions.update),
-                this.parseEJSON(queryOptions.options)
+                this.parseEJSON(JSON.stringify(queryOptions.filter)),
+                this.parseEJSON(JSON.stringify(queryOptions.update)),
+                this.parseEJSON(JSON.stringify(queryOptions.options))
             );
         return result;
     }
