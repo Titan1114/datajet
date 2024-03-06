@@ -35,7 +35,8 @@ export class AuthController {
     const user = await this.authService.googleLogin(req.user);
     const payload = { username: user.username, sub: user.id };
     const accessToken = await this.jwtService.signAsync(payload);
-    return res.redirect(`http://localhost:5173/${accessToken}`);
+    // return res.redirect(`http://localhost:5173/${accessToken}`);
+    return res.redirect(`https://datajet.netlify.app/${accessToken}`);
   }
 
   @Get('/google/logout')
